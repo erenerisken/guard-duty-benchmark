@@ -117,6 +117,24 @@ CSV columns:
 config,key,size_bytes,kind,concurrency,upload_ts,event_ts,latency_s,scan_result
 ```
 
+## Results
+
+The raw output from this run is included in `gd_scan_results.csv`.
+
+Console summary:
+
+```text
+=== Latency summary (seconds) ===
+config           n     p50     p90     p99     min     max    mean  result
+size_1KB        15     0.7     1.2     1.3     0.0     1.4     0.7  NO_THREATS_FOUND
+size_256KB      15     0.7     1.1     1.3     0.0     1.3     0.7  NO_THREATS_FOUND
+size_1MB        15     0.7     1.2     1.2     0.3     1.2     0.8  NO_THREATS_FOUND
+size_5MB        15     0.5     0.9     1.0     0.0     1.0     0.6  NO_THREATS_FOUND
+type_zip        15     0.6     1.1     1.3     0.1     1.4     0.6  NO_THREATS_FOUND
+type_eicar      15     0.7     1.2     1.4     0.1     1.4     0.7  THREATS_FOUND
+concur_burst    15     0.7     1.3     1.3     0.1     1.3     0.8  NO_THREATS_FOUND
+```
+
 ## Cleanup
 
 Run:
