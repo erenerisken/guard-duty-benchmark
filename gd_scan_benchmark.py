@@ -51,6 +51,9 @@ CONFIGS = [
     ("size_256KB",   256 * KB, "clean", "sequential"),
     ("size_1MB",     MB,       "clean", "sequential"),
     ("size_5MB",     5 * MB,   "clean", "sequential"),   # baseline
+    ("size_10MB",    10 * MB,  "clean", "sequential"),
+    ("size_25MB",    25 * MB,  "clean", "sequential"),
+    ("size_50MB",    50 * MB,  "clean", "sequential"),
     ("type_zip",     5 * MB,   "zip",   "sequential"),
     ("type_eicar",   len(EICAR), "eicar", "sequential"),
     ("concur_burst", 5 * MB,   "clean", "burst"),

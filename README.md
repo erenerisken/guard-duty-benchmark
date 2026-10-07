@@ -23,11 +23,15 @@ The current benchmark matrix covers:
 | `size_256KB` | 256 KB clean object | sequential |
 | `size_1MB` | 1 MB clean object | sequential |
 | `size_5MB` | 5 MB clean object | sequential |
+| `size_10MB` | 10 MB clean object | sequential |
+| `size_25MB` | 25 MB clean object | sequential |
+| `size_50MB` | 50 MB clean object | sequential |
 | `type_zip` | 5 MB payload inside a zip | sequential |
 | `type_eicar` | EICAR antivirus test string | sequential |
 | `concur_burst` | 5 MB clean objects | burst |
 
-By default, each config uploads 15 objects.
+By default, each config uploads 15 objects (150 objects across 10 configs).
+Sizes use binary units: 1 MB in the config labels is 1 MiB (1,048,576 bytes).
 
 ## Files
 
@@ -119,21 +123,32 @@ config,key,size_bytes,kind,concurrency,upload_ts,event_ts,latency_s,scan_result
 
 ## Results
 
-The raw output from this run is included in `gd_scan_results.csv`.
+The latest run (`640a1d65`) is included in `gd_scan_results.csv`, with 150
+results across all 10 configs (15 objects each). All 135 clean and ZIP objects
+returned `NO_THREATS_FOUND`; all 15 EICAR objects returned `THREATS_FOUND`.
 
-Console summary:
+Console summary, recalculated from the CSV using the harness's percentile and
+rounding logic:
 
 ```text
 === Latency summary (seconds) ===
 config           n     p50     p90     p99     min     max    mean  result
-size_1KB        15     0.7     1.2     1.3     0.0     1.4     0.7  NO_THREATS_FOUND
-size_256KB      15     0.7     1.1     1.3     0.0     1.3     0.7  NO_THREATS_FOUND
-size_1MB        15     0.7     1.2     1.2     0.3     1.2     0.8  NO_THREATS_FOUND
-size_5MB        15     0.5     0.9     1.0     0.0     1.0     0.6  NO_THREATS_FOUND
-type_zip        15     0.6     1.1     1.3     0.1     1.4     0.6  NO_THREATS_FOUND
-type_eicar      15     0.7     1.2     1.4     0.1     1.4     0.7  THREATS_FOUND
-concur_burst    15     0.7     1.3     1.3     0.1     1.3     0.8  NO_THREATS_FOUND
+size_1KB        15     0.9     1.3     1.4     0.5     1.4     0.9  NO_THREATS_FOUND
+size_256KB      15     1.1     1.5     1.6     0.6     1.6     1.1  NO_THREATS_FOUND
+size_1MB        15     0.9     1.3     2.1     0.1     2.3     0.9  NO_THREATS_FOUND
+size_5MB        15     1.0     1.5     1.5     0.6     1.5     1.0  NO_THREATS_FOUND
+size_10MB       15     1.1     1.7     1.9     0.5     1.9     1.1  NO_THREATS_FOUND
+size_25MB       15     1.6     2.0     2.4     0.9     2.4     1.6  NO_THREATS_FOUND
+size_50MB       15     2.2     2.6     2.6     1.2     2.6     2.1  NO_THREATS_FOUND
+type_zip        15     1.2     1.6     1.7     0.8     1.7     1.2  NO_THREATS_FOUND
+type_eicar      15     0.9     1.4     1.5     0.4     1.5     1.0  THREATS_FOUND
+concur_burst    15     0.8     1.1     1.2     0.3     1.2     0.8  NO_THREATS_FOUND
 ```
+
+In this run, median latency increased from 1.1 seconds at 10 MiB to 1.6 seconds
+at 25 MiB and 2.2 seconds at 50 MiB. Event timestamps in the CSV have whole-second
+precision, and each config has only 15 samples, so small differences and p99
+estimates should be interpreted cautiously.
 
 ## Cleanup
 
